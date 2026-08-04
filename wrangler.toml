@@ -1,3 +1,6 @@
 name = "esther-court-adventure"
-compatibility_date = "2026-08-03"
-pages_build_output_dir = "."
+compatibility_date = "2026-08-04"
+
+# Static site — works with Cloudflare's `npx wrangler deploy` command
+[assets]
+directory = "."
