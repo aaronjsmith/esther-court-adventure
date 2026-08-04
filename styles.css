@@ -403,6 +403,10 @@ body {
   letter-spacing: 0.04em;
 }
 
+.choice-btn:not(.primary) {
+  text-align: left;
+}
+
 .choice-btn.primary:hover,
 .choice-btn.primary:focus-visible {
   background: linear-gradient(135deg, #922c3d 0%, var(--wine) 100%);

@@ -39,9 +39,6 @@
         <button type="button" id="replay-voice" class="icon-btn" title="Hear again" hidden>↻</button>
       </div>
       <p id="dialog-text" class="dialog-text"></p>
-      <button type="button" id="continue-btn" class="choice-btn primary continue-btn" hidden>
-        Continue
-      </button>
     </aside>
 
     <nav id="choices" class="choices" aria-label="Choices"></nav>
@@ -78,8 +75,7 @@
       <img id="ending-art" class="ending-art" alt="" hidden />
       <h2 id="ending-title"></h2>
       <p id="ending-body"></p>
-      <button type="button" id="ending-continue" class="choice-btn primary continue-btn" hidden>Continue</button>
-      <button type="button" id="restart-btn" class="choice-btn primary" hidden>Play Again</button>
+      <button type="button" id="restart-btn" class="choice-btn primary">Play Again</button>
     </div>
   </div>
 
@@ -89,7 +85,7 @@
       <p class="voice-help">Choose how each person sounds. Tap Hear to try a voice.</p>
 
       <label class="voice-field">
-        <span>Esther <em>(soft glamorous queen)</em></span>
+        <span>Esther <em>(graceful queen)</em></span>
         <div class="voice-row">
           <select id="voice-esther" aria-label="Esther's voice"></select>
           <button type="button" class="preview-btn" data-role="esther">Hear</button>
