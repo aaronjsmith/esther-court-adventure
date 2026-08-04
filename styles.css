@@ -605,6 +605,21 @@ body {
   margin-top: 0.35rem;
 }
 
+.voice-disclaimer {
+  color: var(--gold-bright) !important;
+}
+
+.voice-disclaimer strong {
+  font-weight: 600;
+  color: var(--parchment);
+}
+
+.voice-card .voice-disclaimer {
+  margin-top: -0.35rem !important;
+  margin-bottom: 1rem !important;
+  font-size: 0.88rem !important;
+}
+
 .art-credit a {
   color: var(--gold-bright);
   text-decoration: underline;

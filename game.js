@@ -71,6 +71,55 @@
     return `${ART}/${id}_FB_GSI_Esther_1920.jpg`;
   }
 
+  // Portraits used when a character speaks on lose/win screens
+  const SPEAKER_ART = {
+    esther: art(25),
+    king: art(1),
+    haman: art(21),
+  };
+
+  function artForSpeaker(speaker, fallback) {
+    return SPEAKER_ART[speaker] || fallback || art(24);
+  }
+
+  function setEndingArt(src, alt) {
+    if (!el.endingArt) return;
+    if (!src) {
+      el.endingArt.hidden = true;
+      el.endingArt.removeAttribute("src");
+      return;
+    }
+    el.endingArt.src = src;
+    el.endingArt.alt = alt || "";
+    el.endingArt.hidden = false;
+  }
+
+  function setEndingSpeakerLabel(line) {
+    let speakerEl = el.overlay.querySelector(".ending-speaker");
+    if (!speakerEl) {
+      speakerEl = document.createElement("p");
+      speakerEl.className = "ending-speaker";
+      el.endingBody.parentNode.insertBefore(speakerEl, el.endingBody);
+    }
+    if (!line) {
+      speakerEl.textContent = "";
+      speakerEl.hidden = true;
+      return;
+    }
+    const meta = speakers[line.speaker] || speakers.narrator;
+    speakerEl.textContent = meta.label;
+    speakerEl.hidden = false;
+  }
+
+  async function playEndingLine(line, fallbackImage) {
+    if (!line) return;
+    const meta = speakers[line.speaker] || speakers.narrator;
+    setEndingArt(artForSpeaker(line.speaker, fallbackImage), meta.label);
+    setEndingSpeakerLabel(line);
+    el.endingBody.textContent = line.text;
+    await speakLine(line);
+  }
+
   function failEnding(overrides) {
     return {
       ending: "defeat",
@@ -93,10 +142,10 @@
       image: art(11),
       kicker: "A Bible story game",
       title: "Into the King's Court",
-      body: "Help Queen Esther be brave and graceful. If she is rude, she will lose. Wait for the right day, invite the king and Haman to dinner, and tell the truth with kindness.",
+      body: "Help Queen Esther be brave and graceful. She must fast and seek the Lord’s help to save her people. If she is rude, she will lose. Invite the king and Haman to dinner, and tell the truth with kindness. (Speech uses system voices—best in Microsoft Edge on Windows.)",
       line: {
         speaker: "narrator",
-        text: "Long ago, Queen Esther had to save her people. Be graceful—not rude—or she will lose!",
+        text: "Queen Esther needs the Lord’s help to save her people. She must fast, be graceful—not rude—or she will lose!",
       },
       choices: [{ label: "Let's play!", next: "chamber" }],
     },
@@ -104,13 +153,13 @@
     chamber: {
       getImage: () => (state.day === 1 ? art(25) : state.day === 2 ? art(27) : art(28)),
       kicker: "Esther's room",
-      title: "Wait three days",
+      title: "Fast three days",
       getBody: () =>
         state.day === 1
-          ? "Esther prays and waits. Going to the king too soon is dangerous."
+          ? "Esther fasts and asks the Lord for help. Only God can save her people. Going to the king too soon is dangerous."
           : state.day === 2
-            ? "Day 2. Mordecai warns her: Haman wants to hurt God's people. Keep waiting."
-            : "Day 3. Esther dresses with grace. Now she may go to the king.",
+            ? "Day 2 of fasting. Mordecai warns her: Haman wants to hurt God’s people. Keep fasting and pray for the Lord’s help."
+            : "Day 3 of fasting. Esther trusts the Lord, dresses with grace, and is ready to go to the king.",
       getExtraHtml: () => `
         <div class="day-meter" aria-label="Day ${state.day} of 3">
           <span class="day-pip ${state.day >= 1 ? "filled" : ""}"></span>
@@ -122,18 +171,18 @@
         if (state.day === 1) {
           return {
             speaker: "esther",
-            text: "I will wait with a calm heart. Rushing would not be wise or graceful.",
+            text: "I will fast and seek the Lord. Without His help, I cannot save my people.",
           };
         }
         if (state.day === 2) {
           return {
             speaker: "esther",
-            text: "One more day of prayer. Please, God, help me be brave and gentle.",
+            text: "One more day of fasting. Please, Lord, help me save my people. Make me brave and gentle.",
           };
         }
         return {
           speaker: "esther",
-          text: "Today I will go. I am afraid, but I will walk with grace. If I die, I die.",
+          text: "I have fasted, and I trust the Lord. Today I will go with grace. If I die, I die.",
         };
       },
       getChoices: () => {
@@ -145,12 +194,12 @@
         ];
         if (state.day < 3) {
           choices.unshift({
-            label: "Wait one more day and keep praying",
+            label: "Keep fasting and seek the Lord’s help",
             action: "waitDay",
           });
           if (state.day === 1) {
             choices.push({
-              label: "Ask Haman for help instead",
+              label: "Ask Haman for help instead of the Lord",
               next: "death_trust_haman",
             });
           }
@@ -160,10 +209,10 @@
     },
 
     death_early: failEnding({
-      body: "Esther rushed in too early. The king did not save her. Haman killed the Jews, and Esther weeps.",
+      body: "Esther did not finish fasting or seek the Lord’s help. She rushed in too early. Haman killed the Jews, and Esther weeps.",
       line: {
         speaker: "esther",
-        text: "I should have waited. My people… I am so sorry.",
+        text: "I should have fasted and trusted the Lord. My people… I am so sorry.",
         emotion: "cry",
       },
       after: {
@@ -174,14 +223,14 @@
 
     death_trust_haman: failEnding({
       image: art(21),
-      body: "Esther asked mean Haman for help. He lied, then hurt her people at once.",
+      body: "Esther asked mean Haman for help instead of the Lord. He lied, then hurt her people at once.",
       line: {
         speaker: "haman",
         text: "Help you? Ha! Now the Jews will perish!",
       },
       after: {
         speaker: "esther",
-        text: "I trusted the wrong man. My people…",
+        text: "I should have sought the Lord… My people…",
         emotion: "cry",
       },
     }),
@@ -190,7 +239,7 @@
       image: art(29),
       kicker: "The king's room",
       title: "Before the king",
-      body: "Esther enters with grace. The king holds out his golden stick. She is safe.",
+      body: "Esther enters with grace, trusting the Lord. The king holds out his golden stick. She is safe.",
       line: {
         speaker: "king",
         text: "Queen Esther, what do you wish? Ask me anything—even half my kingdom!",
@@ -291,7 +340,7 @@
       image: art(32),
       kicker: "Esther's dinner",
       title: "Speak with grace",
-      body: "At the table, Esther must be brave and graceful. If she is rude, she will lose.",
+      body: "At the table, Esther must be brave and graceful. With the Lord’s help, soft truth can save her people. If she is rude, she will lose.",
       line: {
         speaker: "king",
         text: "Esther, what is your request? It shall be given to you.",
@@ -344,7 +393,7 @@
       image: art(43),
       kicker: "The truth",
       title: "A graceful reveal",
-      body: "Esther speaks softly and clearly. The king listens. Haman’s smile falls away.",
+      body: "Esther speaks softly and clearly, trusting the Lord to help save her people. The king listens. Haman’s smile falls away.",
       line: {
         speaker: "esther",
         text: "If I have found favor, spare my life and my people. Our enemy is this wicked Haman.",
@@ -356,10 +405,10 @@
       ending: "victory",
       image: art(47),
       title: "You did it!",
-      body: "Because Esther waited, spoke with grace—not rudeness—and told the truth, her people were saved.",
+      body: "Because Esther fasted, sought the Lord’s help, spoke with grace—not rudeness—and told the truth, her people were saved.",
       line: {
         speaker: "narrator",
-        text: "Grace and courage won. Rudeness would have lost the day. Great job!",
+        text: "The Lord helped Esther save her people. Grace and faith won. Great job!",
       },
       speak: true,
     },
@@ -715,18 +764,17 @@
     el.dialog.hidden = true;
     el.choices.innerHTML = "";
 
-    if (scene.image && el.endingArt) {
-      el.endingArt.src = scene.image;
-      el.endingArt.alt = scene.title;
-      el.endingArt.hidden = false;
-    } else if (el.endingArt) {
-      el.endingArt.hidden = true;
-      el.endingArt.removeAttribute("src");
-    }
+    setEndingArt(scene.image, scene.title);
+    setEndingSpeakerLabel(null);
 
-    // Speak one clear line, then optional follow-up — no repeated body text dump
-    if (scene.line) await speakLine(scene.line);
-    if (scene.after) await speakLine(scene.after);
+    // Each spoken line swaps the art to that speaker
+    if (scene.line) await playEndingLine(scene.line, scene.image);
+    if (scene.after) await playEndingLine(scene.after, scene.image);
+
+    // Return to summary text after dialogue
+    setEndingSpeakerLabel(null);
+    el.endingBody.textContent = scene.body;
+    setEndingArt(scene.image, scene.title);
   }
 
   async function goTo(id) {
