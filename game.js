@@ -81,15 +81,22 @@
     };
   }
 
+  function rudeFail(overrides) {
+    return failEnding({
+      title: "Too rude!",
+      ...overrides,
+    });
+  }
+
   const scenes = {
     title: {
       image: art(11),
       kicker: "A Bible story game",
       title: "Into the King's Court",
-      body: "Help Queen Esther be brave and graceful. Wait for the right day, invite the king and Haman to dinner, and tell the truth with kindness.",
+      body: "Help Queen Esther be brave and graceful. If she is rude, she will lose. Wait for the right day, invite the king and Haman to dinner, and tell the truth with kindness.",
       line: {
         speaker: "narrator",
-        text: "Long ago, Queen Esther had to save her people. Choose wisely!",
+        text: "Long ago, Queen Esther had to save her people. Be graceful—not rude—or she will lose!",
       },
       choices: [{ label: "Let's play!", next: "chamber" }],
     },
@@ -194,39 +201,39 @@
           next: "invite_accepted",
         },
         {
-          label: "Demand he save everyone right now",
+          label: "Be rude and demand he save everyone now",
           next: "death_demand",
         },
         {
-          label: "Point at Haman and shout that he is evil",
+          label: "Be rude: point at Haman and shout",
           next: "death_shout_court",
         },
       ],
     },
 
-    death_demand: failEnding({
+    death_demand: rudeFail({
       image: art(29),
-      body: "Esther demanded instead of speaking with grace. The king grew angry. Haman’s plan went forward.",
+      body: "Esther was rude to the king. Because she was rude, she lost. Haman’s plan went forward, and the Jews were not saved.",
       line: {
         speaker: "king",
-        text: "This is not how a queen asks! Leave my court!",
+        text: "That is rude! A queen does not speak to me that way. Leave!",
       },
       after: {
         speaker: "haman",
-        text: "Perfect. Now I will finish the Jews!",
+        text: "She was rude—and now I win. The Jews will perish!",
       },
     }),
 
-    death_shout_court: failEnding({
+    death_shout_court: rudeFail({
       image: art(30),
-      body: "Esther shouted in the open court. Haman twisted her words. The king did not believe her yet.",
+      body: "Esther was rude and shouted in court. Because she was rude, she lost. The king did not trust her.",
       line: {
         speaker: "haman",
-        text: "See how wild she is? Do not listen to her!",
+        text: "See how rude she is? Do not listen to her!",
       },
       after: {
         speaker: "esther",
-        text: "I spoke too roughly… and my people are lost.",
+        text: "I was rude… and my people are lost.",
         emotion: "cry",
       },
     }),
@@ -235,7 +242,7 @@
       image: art(30),
       kicker: "A graceful plan",
       title: "Dinner invitation",
-      body: "Esther bows and invites them kindly. Soft words can open hard hearts.",
+      body: "Esther bows and invites them kindly. Soft words can open hard hearts. Rudeness would ruin everything.",
       line: {
         speaker: "esther",
         text: "If it please the king, come to the dinner I have prepared—and bring Haman too.",
@@ -243,22 +250,39 @@
       choices: [
         { label: "Go to the dinner", next: "banquet" },
         {
-          label: "Skip dinner and accuse Haman in the hallway",
+          label: "Be rude and snap at the king",
+          next: "death_rude_invite",
+        },
+        {
+          label: "Be rude: accuse Haman in the hallway",
           next: "death_hallway",
         },
       ],
     },
 
-    death_hallway: failEnding({
+    death_rude_invite: rudeFail({
+      image: art(30),
+      body: "Esther snapped at the king. Because she was rude, she lost. Haman struck while the king was angry.",
+      line: {
+        speaker: "esther",
+        text: "Just come to dinner—hurry up!",
+      },
+      after: {
+        speaker: "king",
+        text: "How rude! I will not listen to you.",
+      },
+    }),
+
+    death_hallway: rudeFail({
       image: art(27),
-      body: "Esther tried to expose Haman in the hallway. Guards stopped her. Haman struck first.",
+      body: "Esther was rude and accused Haman in the hallway. Because she was rude, she lost.",
       line: {
         speaker: "haman",
         text: "Seize her! The Jews will perish today!",
       },
       after: {
         speaker: "esther",
-        text: "I should have waited for the right moment…",
+        text: "I should have been graceful…",
         emotion: "cry",
       },
     }),
@@ -267,7 +291,7 @@
       image: art(32),
       kicker: "Esther's dinner",
       title: "Speak with grace",
-      body: "At the table, Esther must be brave and graceful. Soft truth is stronger than a shout.",
+      body: "At the table, Esther must be brave and graceful. If she is rude, she will lose.",
       line: {
         speaker: "king",
         text: "Esther, what is your request? It shall be given to you.",
@@ -278,7 +302,7 @@
           next: "banquet_grace",
         },
         {
-          label: "Yell that Haman is bad",
+          label: "Be rude and yell that Haman is bad",
           next: "death_yell_dinner",
         },
         {
@@ -288,12 +312,12 @@
       ],
     },
 
-    death_yell_dinner: failEnding({
+    death_yell_dinner: rudeFail({
       image: art(41),
-      body: "Esther yelled at dinner. Haman looked loyal. The king doubted her, and the Jews were not saved.",
+      body: "Esther was rude and yelled at dinner. Because she was rude, she lost. The king did not save her people.",
       line: {
         speaker: "king",
-        text: "Enough shouting! I will hear no more tonight.",
+        text: "That is rude! I will hear no more tonight.",
       },
       after: {
         speaker: "esther",
@@ -332,10 +356,10 @@
       ending: "victory",
       image: art(47),
       title: "You did it!",
-      body: "Because Esther waited, spoke with grace, and told the truth, her people were saved.",
+      body: "Because Esther waited, spoke with grace—not rudeness—and told the truth, her people were saved.",
       line: {
         speaker: "narrator",
-        text: "Courage and kindness won the day. Great job!",
+        text: "Grace and courage won. Rudeness would have lost the day. Great job!",
       },
       speak: true,
     },
