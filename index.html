@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Esther — Into the King's Court</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Spectral:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="ornament-frame" aria-hidden="true"></div>
+
+  <main id="app" class="app">
+    <header class="top-bar">
+      <p class="brand">Esther</p>
+      <div class="top-actions">
+        <button type="button" id="voices-btn" class="mute-btn" title="Choose voices">
+          Voices
+        </button>
+        <button type="button" id="music-btn" class="mute-btn" aria-pressed="false" title="Turn music on or off">
+          Music On
+        </button>
+        <button type="button" id="mute-btn" class="mute-btn" aria-pressed="false" title="Turn talking on or off">
+          Voice On
+        </button>
+      </div>
+    </header>
+
+    <section id="scene" class="scene" aria-live="polite">
+      <!-- Filled by game.js -->
+    </section>
+
+    <aside id="dialog" class="dialog-panel" hidden>
+      <div class="dialog-speaker-row">
+        <span id="speaker-name" class="speaker-name"></span>
+        <button type="button" id="replay-voice" class="icon-btn" title="Hear again" hidden>↻</button>
+      </div>
+      <p id="dialog-text" class="dialog-text"></p>
+      <button type="button" id="continue-btn" class="choice-btn primary continue-btn" hidden>
+        Continue
+      </button>
+    </aside>
+
+    <nav id="choices" class="choices" aria-label="Choices"></nav>
+
+    <footer class="art-credit">
+      <p>
+        Illustrations:
+        <a
+          href="https://www.freebibleimages.org/illustrations/gsi-esther/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Queen Esther prays for help</a>
+        by Glory Story – FreeBibleimages
+        (<a
+          href="https://creativecommons.org/licenses/by-sa/4.0/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >CC BY-SA 4.0</a>).
+      </p>
+      <p>
+        Music:
+        <a
+          href="https://pixabay.com/users/vjgalaxy-8110364/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >Vjgalaxy</a>
+        on Pixabay.
+      </p>
+    </footer>
+  </main>
+
+  <div id="ending-overlay" class="ending-overlay" hidden>
+    <div class="ending-card">
+      <img id="ending-art" class="ending-art" alt="" hidden />
+      <h2 id="ending-title"></h2>
+      <p id="ending-body"></p>
+      <button type="button" id="ending-continue" class="choice-btn primary continue-btn" hidden>Continue</button>
+      <button type="button" id="restart-btn" class="choice-btn primary" hidden>Play Again</button>
+    </div>
+  </div>
+
+  <div id="voice-overlay" class="ending-overlay" hidden>
+    <div class="ending-card voice-card" role="dialog" aria-labelledby="voice-title">
+      <h2 id="voice-title">Pick Voices</h2>
+      <p class="voice-help">Choose how each person sounds. Tap Hear to try a voice.</p>
+
+      <label class="voice-field">
+        <span>Esther <em>(soft glamorous queen)</em></span>
+        <div class="voice-row">
+          <select id="voice-esther" aria-label="Esther's voice"></select>
+          <button type="button" class="preview-btn" data-role="esther">Hear</button>
+        </div>
+      </label>
+
+      <label class="voice-field">
+        <span>The King <em>(James)</em></span>
+        <div class="voice-row">
+          <select id="voice-king" aria-label="King's voice"></select>
+          <button type="button" class="preview-btn" data-role="king">Hear</button>
+        </div>
+      </label>
+
+      <label class="voice-field">
+        <span>Haman <em>(Microsoft William)</em></span>
+        <div class="voice-row">
+          <select id="voice-haman" aria-label="Haman's voice"></select>
+          <button type="button" class="preview-btn" data-role="haman">Hear</button>
+        </div>
+      </label>
+
+      <label class="voice-field">
+        <span>Storyteller <em>(reads the story)</em></span>
+        <div class="voice-row">
+          <select id="voice-narrator" aria-label="Storyteller voice"></select>
+          <button type="button" class="preview-btn" data-role="narrator">Hear</button>
+        </div>
+      </label>
+
+      <div class="voice-actions">
+        <button type="button" id="voice-reset" class="choice-btn">Use Best Guess</button>
+        <button type="button" id="voice-done" class="choice-btn primary">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <audio
+    id="bg-music"
+    src="ancient-persia.mp3"
+    loop
+    preload="auto"
+    playsinline
+  ></audio>
+
+  <script src="game.js"></script>
+</body>
+</html>

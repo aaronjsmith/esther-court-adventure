@@ -1,0 +1,12 @@
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.log
+.vscode/
+.idea/
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.node-version

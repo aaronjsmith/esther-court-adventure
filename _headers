@@ -1,0 +1,15 @@
+# Cache static game assets; keep HTML fresh
+/*.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/FB_GSI_Esther_JPEGW/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.mp3
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.css
+  Cache-Control: public, max-age=3600
+
+/*.js
+  Cache-Control: public, max-age=3600
